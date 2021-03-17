@@ -3,22 +3,38 @@ const app = require("express")();
 require("colors");
 
 module.exports = {
+  /**
+   * @param {string} msg [INFO] This is an info.
+   */
   info(msg) {
     console.log(`[${"INFO".green}] ${msg}`);
   },
 
+  /**
+   * @param {string} msg [WARN] This is a warning.
+   */
   warn(msg) {
     console.log(`[${"WARN".yellow}] ${msg}`);
   },
 
+  /**
+   * @param {string} msg [ERROR] This is an error.
+   */
   error(msg) {
     console.log(`[${"ERROR".red}] ${msg}`);
   },
 
+  /**
+   * @param {string} label [{label}] This is an example.
+   * @param {string} msg [EXEMPLE] {msg}.
+   */
   label(label, msg) {
     console.log(`[${label.grey}] ${msg}`);
   },
 
+  /**
+   * @param {string} path FS-Like Path
+   */
   mkdir(path) {
     try {
       fs.mkdirSync(path, {
@@ -31,6 +47,9 @@ module.exports = {
     }
   },
 
+  /**
+   * @param {string} path FS-Like Path
+   */
   rmdir(path) {
     try {
       fs.rm(path, {
@@ -43,6 +62,10 @@ module.exports = {
     }
   },
 
+  /**
+   * @param {string} path FS-Like Path.
+   * @param {string} data Raw data, plain-text.
+   */
   write(path, data) {
     try {
       fs.writeFileSync(path, data, { encoding: "utf-8" });
@@ -53,6 +76,9 @@ module.exports = {
     }
   },
 
+  /**
+   * @param {string} path FS-Like Path.
+   */
   unlink(path) {
     try {
       fs.unlinkSync(path);
@@ -63,6 +89,12 @@ module.exports = {
     }
   },
 
+  /**
+   * @param {number} port Default (if null) is 80.
+   * @param {string} hostname Default (if null) is 0.0.0.0 ("all granted" state).
+   * @param {string} path Client request URL.
+   * @param {string} htmlFile Specific HTML file to send.
+   */
   www(port, hostname, path, htmlFile) {
     app.get(path, (req, res) => {
       if (req) {
@@ -89,13 +121,20 @@ module.exports = {
       }
     });
 
-    app.listen(port, hostname, () => {
+    app.listen(port || 80, hostname || "0.0.0.0", () => {
       this.warn("Webserver started.");
     });
   },
+
+  /**
+   * @class KaliScripter Core.
+   * @description This class will be used for advanced features.
+   * @version 0.0.1_a
+   */
+
   Core: class Core {
     getInfos() {
-      var version = "1.0.0";
+      var version = "0.0.1_a";
       var author = "Kazzookay";
       var apis = ["Native-Binary-Packages", "Kali-001", "CSIHE-Native"];
 

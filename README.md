@@ -2,6 +2,11 @@
 
 > Make anything you want easier.
 
+### _TODO_
+
+- KaliScripter Core
+- Improve files management
+
 ## Introducing KaliScripter
 
 First step is importing KS.

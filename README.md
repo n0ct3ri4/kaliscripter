@@ -5,7 +5,6 @@
 ### _TODO_
 
 - KaliScripter Core
-- Improve files management
 
 ## Introducing KaliScripter
 
@@ -51,6 +50,36 @@ ks.write("your/file/path/here.txt", "Hello World!");
 
 // Delete (Unlink) file
 ks.unlink("your/file/path/here.txt");
+
+// Check if a File or Folder exists
+ks.isExists("your/file/path/here.txt");
+
+// Change Permissions Mode
+ks.chmod("your/file/or/folder/path/here", "mode", (err) => {
+  if (err) {
+    throw err;
+  } else {
+    return ks.info("Success!");
+  }
+});
+
+// Read a specific directory. (Returns an array)
+ks.readDir("your/folder/path/here", "utf-8");
+
+// Read a specific file. (Returns a string)
+ks.readFile("your/file/path/here.txt", "utf-8");
+```
+
+### Files Manager => Streamer
+
+```js
+const Streamer = new ks.Streamer();
+
+// Read a specific file as a Stream.
+Streamer.Read("your/file/path/here.txt");
+
+// Write a specific file as a Stream.
+Streamer.Write("your/file/path/here.txt");
 ```
 
 ## Web Server

@@ -37,7 +37,7 @@ module.exports = {
   },
 
   /**
-   * @param {string} path FS-Like Path
+   * @param {fs.PathLike} path Folder Path.
    */
   mkdir(path) {
     try {
@@ -52,7 +52,7 @@ module.exports = {
   },
 
   /**
-   * @param {string} path FS-Like Path
+   * @param {fs.PathLike} path Folder Path.
    */
   rmdir(path) {
     try {
@@ -67,8 +67,8 @@ module.exports = {
   },
 
   /**
-   * @param {string} path FS-Like Path.
-   * @param {string} data Raw data, plain-text.
+   * @param {fs.PathLike} path File Path.
+   * @param {any} data Raw data, plain-text.
    */
   write(path, data) {
     try {
@@ -81,7 +81,7 @@ module.exports = {
   },
 
   /**
-   * @param {string} path FS-Like Path.
+   * @param {fs.PathLike} path File Path.
    */
   unlink(path) {
     try {
@@ -90,6 +90,86 @@ module.exports = {
       this.error("FileSystem Error : Cannot unlink your file.");
     } finally {
       this.info("Successfully unlinked your file.");
+    }
+  },
+
+  /**
+   * @param {fs.PathLike} path File or Folder Path.
+   */
+  isExists(path) {
+    if (fs.existsSync(path)) {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
+  /**
+   * @param {fs.PathLike} path File or Folder Path.
+   * @param {fs.Mode} mode FS-Mode.
+   * @param {(err: NodeJS.ErrnoException)} callback Callback Function.
+   */
+  chmod(path, mode, callback) {
+    fs.chmod(path, mode, (err) => {
+      callback(err);
+    });
+  },
+
+  /**
+   * @param {fs.PathLike} path Folder Path.
+   * @param {fs.BufferEncodingOption} encoding Folder Encoding. Default is UTF-8.
+   */
+  readDir(path, encoding) {
+    try {
+      return fs.readdirSync(path, encoding || "utf-8");
+    } catch (err) {
+      this.error("Cannot read this directory.");
+      throw err;
+    }
+  },
+
+  /**
+   * @param {fs.PathLike} path File Path.
+   * @param {fs.BufferEncodingOption} encoding File Encoding. Default is UTF-8.
+   */
+  readFile(path, encoding) {
+    try {
+      return fs.readFileSync(path, encoding || "utf-8");
+    } catch (err) {
+      this.error("Cannot read this file.");
+      throw err;
+    }
+  },
+
+  /**
+   * @class FileSystem Streamer
+   * @param {ClassDecorator} Streamer
+   */
+  Streamer: class Streamer {
+    /**
+     * @param {fs.PathLike} path File Path.
+     * @param {fs.BufferEncodingOption} encoding File Encoding. Default is UTF-8.
+     */
+    Read(path, encoding) {
+      try {
+        return fs.createReadStream(path, { encoding: encoding || "utf-8" });
+      } catch (err) {
+        this.error("Cannot Stream (Read-State) this file.");
+        throw err;
+      }
+    }
+
+    /**
+     * @param {fs.PathLike} path File Path.
+     * @param {fs.BufferEncodingOption} encoding File Encoding. Default is UTF-8.
+     */
+    Write(path, encoding) {
+      try {
+        return fs.createWriteStream(path, { encoding: encoding || "utf-8" });
+      } catch (err) {
+        this.error("Cannot Stream (Write-State) this file.");
+        throw err;
+      }
     }
   },
 

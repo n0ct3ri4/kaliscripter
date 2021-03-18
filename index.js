@@ -1,3 +1,7 @@
+/**
+ * Release Easter-Egg : KaliScripter v1.1.1
+ */
+
 const fs = require("fs");
 const app = require("express")();
 require("colors");

@@ -102,7 +102,7 @@ module.exports = {
   www(port, hostname, path, htmlFile) {
     app.get(path, (req, res) => {
       if (req) {
-        if (fs.existsSync(htmlFile)) {
+        if (!fs.existsSync(htmlFile)) {
           res.writeHead(404, { "Content-Type": "text/html" });
           res.end("This file doesn't exists.", () => {
             this.info(

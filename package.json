@@ -1,6 +1,6 @@
 {
   "name": "kaliscripter",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Make anything you want easier.",
   "main": "index.js",
   "scripts": {

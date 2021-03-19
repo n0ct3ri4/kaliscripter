@@ -211,9 +211,7 @@ module.exports = {
   },
 
   /**
-   * @class KaliScripter Core.
-   * @description This class will be used for advanced features.
-   * @version 0.0.1_a
+   * This feature is under developement. n0ct3ri4 isn't responsible of any issue that you can have.
    */
   Core: class Core {
     getInfos() {
@@ -226,6 +224,35 @@ module.exports = {
       console.log(`Default APIS : ${apis.join(", ")}`);
     }
 
-    // This feature is in-dev.
+    APIS = {
+      NativeBinaryPackages: [
+        {
+          name: "native",
+          value() {
+            return console.log(
+              new String(
+                `"native" is a basic declaration, used to define a default in-app function.`
+              )
+            );
+          },
+        },
+        {
+          name: "__main__",
+          value() {
+            return console.log(
+              new String(
+                `"__main__" is a basic declaration, used to define your in-app main function.`
+              )
+            );
+          },
+        },
+      ],
+      Kali001() {
+        return false;
+      },
+      CSIHENative() {
+        return false;
+      },
+    };
   },
 };

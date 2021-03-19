@@ -2,6 +2,7 @@
  * Release Easter-Egg : KaliScripter v1.1.1
  */
 
+const { kStringMaxLength } = require("buffer");
 const fs = require("fs");
 const app = require("express")();
 require("colors");
@@ -173,41 +174,41 @@ module.exports = {
     }
   },
 
-  /**
-   * @param {number} port Default (if null) is 80.
-   * @param {string} hostname Default (if null) is 0.0.0.0 ("all granted" state).
-   * @param {string} path Client request URL.
-   * @param {string} htmlFile Specific HTML file to send.
-   */
-  www(port, hostname, path, htmlFile) {
-    app.get(path, (req, res) => {
-      if (req) {
-        if (!fs.existsSync(htmlFile)) {
-          res.writeHead(404, { "Content-Type": "text/html" });
-          res.end("This file doesn't exists.", () => {
-            this.info(
-              `Ending point > ${req.socket.remoteAddress.magenta}:${
-                req.socket.remotePort.toString().magenta
-              }`
-            );
-          });
-        } else {
-          res.writeHead(200, { "Content-Type": "text/html" });
-          res.write(fs.readFileSync(htmlFile, "utf-8"));
-          res.end("This file doesn't exists.", () => {
-            this.info(
-              `Ending point > ${req.socket.remoteAddress.magenta}:${
-                req.socket.remotePort.toString().magenta
-              }`
-            );
-          });
-        }
-      }
-    });
+  www: {
+    /**
+     * @param {number} port Default (if null) is 80.
+     * @param {string} hostname Default (if null) is 0.0.0.0 ("all granted" state).
+     * @param {string} path Client request URL.
+     * @param {string} htmlFile Specific HTML file to send.
+     */
+    listen(port, hostname) {
+      app.listen(port || 80, hostname || "0.0.0.0", () => {
+        this.warn("Webserver started.");
+      });
+    },
 
-    app.listen(port || 80, hostname || "0.0.0.0", () => {
-      this.warn("Webserver started.");
-    });
+    /**
+     *
+     * @param {string} url URL Path. Example : "/" or "/robots.txt" or "/auth/login".
+     * @param {fs.PathLike} filePath HTML File Path. Example : "`./src/index.html`" or "`${__dirname}/src/index.html`"
+     */
+    addPage(url, filePath) {
+      app.get(url, (req, res) => {
+        if (req) {
+          if (fs.existsSync(filePath)) {
+            res.setHeader("Content-Type", "text/html");
+            res.send(fs.readFileSync(filePath, "utf-8"));
+            res.status(200);
+          } else {
+            res.setHeader("Content-Type", "text/html");
+            res.send("<i>Requested file doesn't exists.</i>");
+            res.status(404);
+          }
+        } else {
+          throw new Error("Unknown request.");
+        }
+      });
+    },
   },
 
   /**
@@ -215,7 +216,6 @@ module.exports = {
    * @description This class will be used for advanced features.
    * @version 0.0.1_a
    */
-
   Core: class Core {
     getInfos() {
       var version = "0.0.1_a";

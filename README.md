@@ -16,6 +16,8 @@ const ks = require("kaliscripter");
 
 Then, enjoy it!
 
+---
+
 ## Console Logs & Labels
 
 "KS Console System" is a complete console-side beautifier.
@@ -33,6 +35,8 @@ ks.info("Your error here.");
 // Custom
 ks.info("YOUR LABEL HERE", "Your text here.");
 ```
+
+---
 
 ## Files Manager
 
@@ -82,18 +86,23 @@ Streamer.Read("your/file/path/here.txt");
 Streamer.Write("your/file/path/here.txt");
 ```
 
+---
+
 ## Web Server
 
 "KS Web Server" is a simple Express-Based web server.
 
 ```js
-/* 
-- "/url/path" is the URL request path 
-- Refeer to "path/to/html" for file sending.
-*/
+// Start the server...
+ks.www.start(80, "0.0.0.0");
 
-ks.www(80, "localhost", "/url/path", "path/to/html");
+// Add a page...
+// The first arg is the URL request path.
+// The second one is the local path of a common HTML file.
+ks.www.addPage("/auth/login", "./src/auth/login.html");
 ```
+
+---
 
 # License ([?](https://raw.githubusercontent.com/Kazzookay/kaliscripter/main/LICENSE)) :
 

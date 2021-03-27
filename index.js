@@ -1,7 +1,3 @@
-/**
- * Release Easter-Egg : KaliScripter v1.1.1
- */
-
 const fs = require("fs");
 const app = require("express")();
 require("colors");
@@ -177,8 +173,6 @@ module.exports = {
     /**
      * @param {number} port Default (if null) is 80.
      * @param {string} hostname Default (if null) is 0.0.0.0 ("all granted" state).
-     * @param {string} path Client request URL.
-     * @param {string} htmlFile Specific HTML file to send.
      */
     listen(port, hostname) {
       app.listen(port || 80, hostname || "0.0.0.0", () => {
@@ -187,7 +181,6 @@ module.exports = {
     },
 
     /**
-     *
      * @param {string} url URL Path. Example : "/" or "/robots.txt" or "/auth/login".
      * @param {fs.PathLike} filePath HTML File Path. Example : "`./src/index.html`" or "`${__dirname}/src/index.html`"
      */
@@ -195,9 +188,24 @@ module.exports = {
       app.get(url, (req, res) => {
         if (req) {
           if (fs.existsSync(filePath)) {
-            res.setHeader("Content-Type", "text/html");
-            res.send(fs.readFileSync(filePath, "utf-8"));
-            res.status(200);
+            if (filePath.endsWith(".json")) {
+              res.setHeader("Content-Type", "application/json");
+              res.send(fs.readFileSync(filePath, "utf-8"));
+              res.status(200);
+            } else if (
+              filePath.endsWith(".html") ||
+              filePath.endsWith(".htm")
+            ) {
+              res.setHeader("Content-Type", "text/html");
+              res.send(fs.readFileSync(filePath, "utf-8"));
+              res.status(200);
+            } else {
+              res.setHeader("Content-Type", "text/html");
+              res.send(
+                "<i>Unprocessable Entity!</i> <b>Unrecognized file extension.</b>"
+              );
+              res.status(422);
+            }
           } else {
             res.setHeader("Content-Type", "text/html");
             res.send("<i>Requested file doesn't exists.</i>");
@@ -208,51 +216,5 @@ module.exports = {
         }
       });
     },
-  },
-
-  /**
-   * This feature is under developement. n0ct3ri4 isn't responsible of any issue that you can have.
-   */
-  Core: class Core {
-    getInfos() {
-      var version = "0.0.1_a";
-      var author = "Kazzookay";
-      var apis = ["Native-Binary-Packages", "Kali-001", "CSIHE-Native"];
-
-      console.log(`Core Version : ${version}`);
-      console.log(`KS Author    : ${author}`);
-      console.log(`Default APIS : ${apis.join(", ")}`);
-    }
-
-    APIS = {
-      NativeBinaryPackages: [
-        {
-          name: "native",
-          value() {
-            return console.log(
-              new String(
-                `"native" is a basic declaration, used to define a default in-app function.`
-              )
-            );
-          },
-        },
-        {
-          name: "__main__",
-          value() {
-            return console.log(
-              new String(
-                `"__main__" is a basic declaration, used to define your in-app main function.`
-              )
-            );
-          },
-        },
-      ],
-      Kali001() {
-        return false;
-      },
-      CSIHENative() {
-        return false;
-      },
-    };
   },
 };
